@@ -1,9 +1,9 @@
 ## How to create sample flaskapp
 
 # Clone this repository
-git clone <repo_name>
+git clone rvgcp108/devops.git
 
-cd <repo_name>
+cd rvgcp108/devops/create_flask_app_demo/
 
 # Build Docker image
 # docker build -t rvflaskappdemo .
