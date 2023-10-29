@@ -1,0 +1,53 @@
+###################################
+##### Create AWS EKS clsuster ##### 
+###################################							
+## Pre-requisite
+
+Ref. links:
+https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html
+https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html
+
+## Create EKS Cluster 
+eksctl create cluster --name eksclusterautoscaledemo --node-type t3.medium --nodes 2 --nodes-min 1 --nodes-max 2 --region us-west-2 --zones=us-west-2a,us-west-2b,us-west-2c
+
+## Get EKS Cluster service
+eksctl get cluster --name eksclusterautoscaledemo --region us-west-2
+
+## Get EKS Pods details from all namespaces
+kubectl get pods --all-namespaces
+
+
+## Create Separate node group after eks cluster creation with given tags below keys and vlaues
+k8s.io/cluster-autoscaler/eksclusterautoscaledemo: owned  ---> your cluster name
+k8s.io/cluster-autoscaler/enabled : TRUE
+
+
+##Check the existing configurations.
+aws autoscaling describe-auto-scaling-groups 
+
+#Creating an IAM policy for your service account that will allow your Cluster Autoscaler pod to interact with the autoscaling groups.
+aws iam create-policy --policy-name k8s-asg-policy --policy-document file://k8s-asg-policy.json
+
+## Deploy the Cluster Autoscaler.
+# Deploy the Cluster Autoscaler 
+# wget https://raw.githubusercontent.com/kubernetes/autoscaler/master/cluster-autoscaler/cloudprovider/aws/examples/cluster-autoscaler-autodiscover.yaml
+kubectl apply -f ./cluster-autoscaler-autodiscover.yaml
+
+## Check node number before scaling out
+kubectl get nodes -w
+
+## Create an deployment with single pod
+kubectl create deployment autoscale-deployment-demo --image=nginx
+
+## Scale the deployment with 100 pods, like heavy traffic came in production env.
+kubectl scale deployment autoscale-deployment-demo --replicas=100
+
+## To check the progress of the pod’s deployment
+kubectl get deployment autoscale-deployment-demo --watch
+
+## Verify the nodes getting increased.
+kubectl get nodes -w 
+
+#### After demo delete your eks cluster
+## Delete EKS cluster
+##eksctl delete cluster --name eksclusterautoscaledemo --region us-west-2
