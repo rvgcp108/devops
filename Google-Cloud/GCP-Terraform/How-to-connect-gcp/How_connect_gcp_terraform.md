@@ -1,13 +1,19 @@
 ## how to connect Google cloud platform with Terraform(IAC)
+
 - **Step1.** Login to GCP console and create a Project
+
 <p align="center">
-  <img src="./images/How_to_create_project_gcp.png" width="600" title="Architecture" alt="Architecture">
+  <img src="./images/How_to_create_project_gcp.png" width="600" title="ConnectGCP" alt="ConnectGCP">
 </p>
+
 - **Step2.** Create a service account , activate the key and download the key in safe place
+
 <p align="center">
-  <img src="./images/gc-activate-key.png" width="600" title="Architecture" alt="Architecture">
+  <img src="./images/gc-activate-key.png" width="600" title="ActivateGCP" alt="ActivateGCP">
 </p>
+
 - **Step3.** Configure key with Terraform
+
 ```Example
 key name: sa_demo.json
 {
