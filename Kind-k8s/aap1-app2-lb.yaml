@@ -1,0 +1,10 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: app1-app2-service
+spec:
+  type: LoadBalancer
+  selector:
+    svc: app1-app2
+  ports:
+  - port: 80
